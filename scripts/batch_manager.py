@@ -27,7 +27,8 @@ def main():
         # "./configs/timelocks/iota.json",
     ]
 
-    parser = argparse.ArgumentParser(description="Run manager.py with specified action, version, and component on multiple configs.")
+    parser = argparse.ArgumentParser(
+        description="Run manager.py with specified action, version, and component on multiple configs.")
     parser.add_argument(
         "--action",
         required=True,

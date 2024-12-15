@@ -1,3 +1,4 @@
-import { ethereum } from "@graphprotocol/graph-ts"
+import {ethereum} from "@graphprotocol/graph-ts"
 
-export function handleIgnoredEvent(_event: ethereum.Event): void {}
+export function handleIgnoredEvent(_event: ethereum.Event): void {
+}

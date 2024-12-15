@@ -1,3 +1,10 @@
 {
-	"importModels": ["GlobalCounter", "Quote", "Symbol", "User", "Account", "DebugEntity"]
+  "importModels": [
+    "GlobalCounter",
+    "Quote",
+    "Symbol",
+    "User",
+    "Account",
+    "DebugEntity"
+  ]
 }

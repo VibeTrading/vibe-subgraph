@@ -1,0 +1,19 @@
+{
+  "Quote": [
+    "SendQuote",
+    "LiquidatePositionsPartyB",
+    "LiquidatePositionsPartyA",
+    "ForceClosePosition",
+    "EmergencyClosePosition",
+    "FillCloseRequest",
+    "OpenPosition"
+  ],
+  "DailyUserHistory": [
+    "EmergencyClosePosition",
+    "FillCloseRequest",
+    "ForceClosePosition",
+    "LiquidatePositionsPartyA",
+    "LiquidatePositionsPartyB",
+    "OpenPosition"
+  ]
+}

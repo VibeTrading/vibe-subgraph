@@ -56,6 +56,9 @@ abi_versions = {
     "timelock": ["1"],
     "vault": ["1"],
     "vault_token": ["1"],
+    "referralNFT": ["1"],
+    "rakeback": ["1"],
+    "multiAccount": ["1"],
 }
 
 
@@ -81,7 +84,8 @@ def copy_abi_files(abi_path: str):
 def create_schema_file(target_module: str, target_config: Dict[str, Any]):
     common_models_dir = os.path.join("./common", "models")
 
-    with open(os.path.join(target_module, "schema.graphql"), "r") as src_file, open("./schema.graphql", "w") as dest_file:
+    with open(os.path.join(target_module, "schema.graphql"), "r") as src_file, open("./schema.graphql",
+                                                                                    "w") as dest_file:
         dest_file.write("# Imported Models\n")
         for model in os.listdir(common_models_dir):
             model_name = model.split(".")[0]
@@ -357,7 +361,8 @@ def prepare_module(config: Config, target_module: str):
                 "language": "wasm/assemblyscript",
                 "entities": ["Account"],
                 "abis": [{"name": contract.path(), "file": f"./abis/{contract.path()}.json"}],
-                "eventHandlers": [{"event": event.signature, "handler": event.handler_name} for event in contract_events],
+                "eventHandlers": [{"event": event.signature, "handler": event.handler_name} for event in
+                                  contract_events],
                 "file": f"./{target_module}/src_{contract.path() if not contract.fake else 'fake'}.ts",
             },
         }
@@ -365,7 +370,8 @@ def prepare_module(config: Config, target_module: str):
             source_config["source"]["endBlock"] = int(contract.endBlock)
 
         if len(contract.dependencies) > 0:
-            source_config["mapping"]["abis"] += [{"name": dep, "file": f"./abis/{dep}.json"} for dep in contract.dependencies]
+            source_config["mapping"]["abis"] += [{"name": dep, "file": f"./abis/{dep}.json"} for dep in
+                                                 contract.dependencies]
 
         contract_indexes[(contract.abi, contract.version)] += 1
 

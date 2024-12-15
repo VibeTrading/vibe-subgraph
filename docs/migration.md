@@ -35,9 +35,11 @@ After refactoring, the project now contains the following subgraphs:
   migrated to a new subgraph named `Liquidation`.
 
 ### 2. **Liquidation Subgraph**
+
 The `Liquidation` subgraph includes new data fields specifically related to liquidator profit.
 
 ### 3. **Analytics Subgraph**
+
 - **Consolidation**: The `Analytics` subgraph has been expanded to include data from the following removed subgraphs:
 
     - **FundingRate**

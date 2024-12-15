@@ -1,5 +1,5 @@
 import {
-	LiquidatePositionsPartyBHandler as CommonLiquidatePositionsPartyBHandler
+    LiquidatePositionsPartyBHandler as CommonLiquidatePositionsPartyBHandler
 } from "../../../common/handlers/symmio/LiquidatePositionsPartyBHandler"
 import {ethereum} from "@graphprotocol/graph-ts";
 import {Version} from "../../../common/BaseHandler";
@@ -9,31 +9,31 @@ import {LiquidatePositionsPartyB as LiquidatePositionsPartyB_0_8_3} from "../../
 import {handleLiquidatePosition} from "../commonHandlers/liquidatePositions";
 
 export class LiquidatePositionsPartyBHandler<T> extends CommonLiquidatePositionsPartyBHandler<T> {
-	handle(_event: ethereum.Event, version: Version): void {
-		// @ts-ignore
-		const event = changetype<T>(_event)
-		super.handle(_event, version)
-		super.handleSymbol(_event, version)
-		super.handleAccount(_event, version)
+    handle(_event: ethereum.Event, version: Version): void {
+        // @ts-ignore
+        const event = changetype<T>(_event)
+        super.handle(_event, version)
+        super.handleSymbol(_event, version)
+        super.handleAccount(_event, version)
 
-		for (let i = 0; i < event.params.quoteIds.length; i++) {
-			const qId = event.params.quoteIds[i]
-			switch (version) {
-				case Version.v_0_8_3: {
-					handleLiquidatePosition<LiquidatePositionsPartyB_0_8_3>(event, version, qId)
-					break
-				}
-				case Version.v_0_8_2: {
-					handleLiquidatePosition<LiquidatePositionsPartyB_0_8_2>(event, version, qId)
-					break
-				}
-				case Version.v_0_8_0: {
-					handleLiquidatePosition<LiquidatePositionsPartyB_0_8_0>(event, version, qId)
-					break
-				}
-			}
-		}
+        for (let i = 0; i < event.params.quoteIds.length; i++) {
+            const qId = event.params.quoteIds[i]
+            switch (version) {
+                case Version.v_0_8_3: {
+                    handleLiquidatePosition<LiquidatePositionsPartyB_0_8_3>(event, version, qId)
+                    break
+                }
+                case Version.v_0_8_2: {
+                    handleLiquidatePosition<LiquidatePositionsPartyB_0_8_2>(event, version, qId)
+                    break
+                }
+                case Version.v_0_8_0: {
+                    handleLiquidatePosition<LiquidatePositionsPartyB_0_8_0>(event, version, qId)
+                    break
+                }
+            }
+        }
 
-		super.handleQuote(_event, version) // AverageClosePrice should be updated after that calculation in handleLiquidatePosition method
-	}
+        super.handleQuote(_event, version) // AverageClosePrice should be updated after that calculation in handleLiquidatePosition method
+    }
 }

@@ -18,38 +18,39 @@ rolesNames.set("0x427da25fe773164f88948d3e215c94b6554e2ed5e5f203a821c9f2f6131cf7
 rolesNames.set("0x0000000000000000000000000000000000000000000000000000000000000000", "DEFAULT_ADMIN_ROLE")
 
 export function getRoleName(key: string): string {
-	if (rolesNames.has(key))
-		return rolesNames.get(key)
-	return key
+    if (rolesNames.has(key))
+        return rolesNames.get(key)
+    return key
 }
 
 export enum QuoteStatus {
-	PENDING,
-	LOCKED,
-	CANCEL_PENDING,
-	CANCELED,
-	OPENED,
-	CLOSE_PENDING,
-	CANCEL_CLOSE_PENDING,
-	CLOSED,
-	LIQUIDATED,
-	EXPIRED,
+    PENDING,
+    LOCKED,
+    CANCEL_PENDING,
+    CANCELED,
+    OPENED,
+    CLOSE_PENDING,
+    CANCEL_CLOSE_PENDING,
+    CLOSED,
+    LIQUIDATED,
+    EXPIRED,
 }
 
 export enum BalanceChangeType {
-	ALLOCATE,
-	DEALLOCATE,
-	PLATFORM_FEE_IN,
-	PLATFORM_FEE_OUT,
-	REALIZED_PNL_IN,
-	REALIZED_PNL_OUT,
-	CVA_IN,
-	CVA_OUT,
-	LF_IN,
-	LF_OUT,
-	DEPOSIT,
-	WITHDRAW,
+    ALLOCATE,
+    DEALLOCATE,
+    PLATFORM_FEE_IN,
+    PLATFORM_FEE_OUT,
+    REALIZED_PNL_IN,
+    REALIZED_PNL_OUT,
+    CVA_IN,
+    CVA_OUT,
+    LF_IN,
+    LF_OUT,
+    DEPOSIT,
+    WITHDRAW,
 }
+
 // @ts-ignore
 export let balanceChangeTypes = new Map<number, string>()
 balanceChangeTypes.set(BalanceChangeType.ALLOCATE, "ALLOCATE")

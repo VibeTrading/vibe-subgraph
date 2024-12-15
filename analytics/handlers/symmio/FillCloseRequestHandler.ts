@@ -1,5 +1,5 @@
 import {
-	FillCloseRequestHandler as CommonFillCloseRequestHandler
+    FillCloseRequestHandler as CommonFillCloseRequestHandler
 } from "../../../common/handlers/symmio/FillCloseRequestHandler"
 import {ethereum} from "@graphprotocol/graph-ts";
 import {Version} from "../../../common/BaseHandler";
@@ -10,27 +10,27 @@ import {FillCloseRequest as FillCloseRequest_0_8_0} from "../../../generated/sym
 import {handleClose} from "../commonHandlers/close";
 
 export class FillCloseRequestHandler<T> extends CommonFillCloseRequestHandler<T> {
-	handle(_event: ethereum.Event, version: Version): void {
-		// @ts-ignore
-		const event = changetype<T>(_event)
-		super.handle(_event, version)
-		super.handleQuote(_event, version)
-		super.handleSymbol(_event, version)
-		super.handleAccount(_event, version)
+    handle(_event: ethereum.Event, version: Version): void {
+        // @ts-ignore
+        const event = changetype<T>(_event)
+        super.handle(_event, version)
+        super.handleQuote(_event, version)
+        super.handleSymbol(_event, version)
+        super.handleAccount(_event, version)
 
-		switch (version) {
-			case Version.v_0_8_3: {
-				handleClose<FillCloseRequest_0_8_3>(event, "FillCloseRequest", version)
-				break
-			}
-			case Version.v_0_8_2: {
-				handleClose<FillCloseRequest_0_8_2>(event, "FillCloseRequest", version)
-				break
-			}
-			case Version.v_0_8_0: {
-				handleClose<FillCloseRequest_0_8_0>(event, "FillCloseRequest", version)
-				break
-			}
-		}
-	}
+        switch (version) {
+            case Version.v_0_8_3: {
+                handleClose<FillCloseRequest_0_8_3>(event, "FillCloseRequest", version)
+                break
+            }
+            case Version.v_0_8_2: {
+                handleClose<FillCloseRequest_0_8_2>(event, "FillCloseRequest", version)
+                break
+            }
+            case Version.v_0_8_0: {
+                handleClose<FillCloseRequest_0_8_0>(event, "FillCloseRequest", version)
+                break
+            }
+        }
+    }
 }

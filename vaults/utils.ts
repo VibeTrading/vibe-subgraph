@@ -1,6 +1,6 @@
 export enum WithdrawRequestStatus {
-	PENDING,
-	READY,
-	DONE,
-	CANCELED,
+    PENDING,
+    READY,
+    DONE,
+    CANCELED,
 }
