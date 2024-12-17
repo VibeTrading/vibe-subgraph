@@ -4,19 +4,27 @@ import {
     AcceptCancelRequest,
     AddSymbol,
     AllocateForPartyB,
-    AllocatePartyA, ChargeFundingRate,
+    AllocatePartyA,
+    ChargeFundingRate,
     DeallocateForPartyB,
     DeallocatePartyA,
     Deposit,
-    EmergencyClosePosition, ExpireQuote,
+    EmergencyClosePosition,
+    ExpireQuote,
     FillCloseRequest,
-    ForceClosePosition, LiquidatePartyA, LiquidatePartyB, LiquidatePendingPositionsPartyA,
+    ForceClosePosition,
+    LiquidatePartyA,
+    LiquidatePartyB,
+    LiquidatePendingPositionsPartyA,
     LiquidatePositionsPartyA,
-    LiquidatePositionsPartyB, LockQuote,
-    OpenPosition, RegisterPartyB,
+    LiquidatePositionsPartyB,
+    LockQuote,
+    OpenPosition,
+    RegisterPartyB,
     RequestToClosePosition,
     SendQuote,
-    SetSymbolTradingFee, UnlockQuote,
+    SetSymbolTradingFee,
+    UnlockQuote,
     Withdraw
 } from '../generated/symmio_0_8_3/symmio_0_8_3'
 import {AllocateForPartyBHandler} from './handlers/symmio/AllocateForPartyBHandler'
@@ -84,37 +92,37 @@ export function handleDeposit(event: Deposit): void {
 
 
 export function handleEmergencyClosePosition(event: EmergencyClosePosition): void {
-    let handler = new EmergencyClosePositionHandler<EmergencyClosePosition>(event)
+    let handler = new EmergencyClosePositionHandler<EmergencyClosePosition>()
     handler.handle(event, Version.v_0_8_3)
 }
 
 
 export function handleFillCloseRequest(event: FillCloseRequest): void {
-    let handler = new FillCloseRequestHandler<FillCloseRequest>(event)
+    let handler = new FillCloseRequestHandler<FillCloseRequest>()
     handler.handle(event, Version.v_0_8_3)
 }
 
 
 export function handleForceClosePosition(event: ForceClosePosition): void {
-    let handler = new ForceClosePositionHandler<ForceClosePosition>(event)
+    let handler = new ForceClosePositionHandler<ForceClosePosition>()
     handler.handle(event, Version.v_0_8_3)
 }
 
 
 export function handleLiquidatePositionsPartyA(event: LiquidatePositionsPartyA): void {
-    let handler = new LiquidatePositionsPartyAHandler<LiquidatePositionsPartyA>(event)
+    let handler = new LiquidatePositionsPartyAHandler<LiquidatePositionsPartyA>()
     handler.handle(event, Version.v_0_8_3)
 }
 
 
 export function handleLiquidatePositionsPartyB(event: LiquidatePositionsPartyB): void {
-    let handler = new LiquidatePositionsPartyBHandler<LiquidatePositionsPartyB>(event)
+    let handler = new LiquidatePositionsPartyBHandler<LiquidatePositionsPartyB>()
     handler.handle(event, Version.v_0_8_3)
 }
 
 
 export function handleOpenPosition(event: OpenPosition): void {
-    let handler = new OpenPositionHandler<OpenPosition>(event)
+    let handler = new OpenPositionHandler<OpenPosition>()
     handler.handle(event, Version.v_0_8_3)
 }
 
