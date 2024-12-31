@@ -56,6 +56,8 @@ abi_versions = {
     "timelock": ["1"],
     "vault": ["1"],
     "vault_token": ["1"],
+    "rakeback": ["1"],
+    "referralNFT": ["1"],
 }
 
 

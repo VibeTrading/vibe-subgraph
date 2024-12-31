@@ -1,0 +1,10 @@
+{
+  "DailyUserHistory": [
+    "EmergencyClosePosition",
+    "FillCloseRequest",
+    "ForceClosePosition",
+    "LiquidatePositionsPartyA",
+    "LiquidatePositionsPartyB",
+    "OpenPosition"
+  ]
+}

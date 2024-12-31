@@ -80,6 +80,8 @@ type Quote @entity {
     timestampRequestToClosePosition: BigInt
     timestampLiquidatePositionsPartyA: BigInt
     timestampLiquidatePositionsPartyB: BigInt
+    openDay: BigInt
+    closeDay: BigInt
 
     # transaction hashes
     txHashExpireQuote: Bytes
