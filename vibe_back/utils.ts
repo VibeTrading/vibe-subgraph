@@ -1,5 +1,5 @@
 import { Address, BigInt } from "@graphprotocol/graph-ts"
-import { DailyUserHistory } from "../generated/schema"
+import {Account, DailyUserHistory} from "../generated/schema"
 import { referralNFT_1 } from "../generated/referralNFT_1/referralNFT_1"
 import { rakeback_1 } from "../generated/rakeback_1/rakeback_1"
 import { RAKEBACK_ADDRESS, REFERRAL_NFT_ADDRESS } from "./config"
@@ -109,4 +109,11 @@ export function getAccountOwner(tokenId: BigInt): Address {
 	let res = referralNft.try_tokenAccountOwner(tokenId)
 	if (res.reverted) return Address.zero()
 	return res.value
+}
+
+
+export function getOwner(account: Address): Address {
+    const acc = Account.load(account.toHexString());
+    if (!acc) return Address.zero();
+    return Address.fromBytes(acc.user);
 }

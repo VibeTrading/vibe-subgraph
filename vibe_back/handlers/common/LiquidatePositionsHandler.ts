@@ -1,59 +1,54 @@
-import {Address, BigInt, ethereum} from "@graphprotocol/graph-ts"
-import {Quote} from "../../../generated/schema"
-import {updateDailyHistory, zero_address} from "../../utils"
-import {Handler} from "./Handler"
-import {QuoteStatus} from "../../config"
+import {Address, BigInt, ethereum} from "@graphprotocol/graph-ts";
+import {getOwner, updateDailyHistory, zero_address} from "../../utils";
+import {Quote} from "../../../generated/schema";
+import {QuoteStatus} from "../../config";
 import {Version} from "../../../common/BaseHandler";
-import {LiquidatePositionsPartyA, symmio_0_8_2} from "../../../generated/symmio_0_8_2/symmio_0_8_2";
+import {symmio_0_8_2} from "../../../generated/symmio_0_8_2/symmio_0_8_2";
 
-export function handleLiquidatePositions<T>(_event: ethereum.Event, version: Version): void {
-    const lp = new LiquidatePositionsHandler<T>(_event)
-    lp.handle(_event, version)
+export function handleLiquidatePositions<T>(event: ethereum.Event, version: Version): void {
+    // @ts-ignore
+    const liquidateEvent = changetype<T>(event);
+
+    const user = getOwner(liquidateEvent.params.partyA);
+    const account = liquidateEvent.params.partyA;
+
+    if (user == zero_address) return;
+
+    const quoteIds = liquidateEvent.params.quoteIds;
+    for (let i = 0; i < quoteIds.length; i++) {
+        handleSingleLiquidation<T>(quoteIds[i], user, account, liquidateEvent, event.block.timestamp);
+    }
 }
 
-export class LiquidatePositionsHandler<T> extends Handler<T> {
-    event: LiquidatePositionsPartyA  //fixme: why explicit?
-    user: Address
-    account: Address
+function handleSingleLiquidation<T>(quoteId: BigInt, user: Address, account: Address, event: ethereum.Event, timestamp: BigInt): void {
+    // @ts-ignore
+    const liquidateEvent = changetype<T>(event);
+    const tradeVolume = getVolume<T>(quoteId, liquidateEvent);
+    updateDailyHistory(user, account, timestamp.div(BigInt.fromI32(86400)), tradeVolume, BigInt.zero(), timestamp);
+}
 
-    constructor(_event: ethereum.Event) {
-        super(_event)
-        // @ts-ignore
-        const event = changetype<LiquidatePositionsPartyA>(_event) // LiquidatePositionsPartyA, LiquidatePositionsPartyB have the same event signature
-        this.user = super.getOwner(event.params.partyA)
-        this.account = event.params.partyA
-        this.event = event
-    }
+function getVolume<T>(quoteId: BigInt, event: ethereum.Event): BigInt {
+    // @ts-ignore
+    const liquidateEvent = changetype<T>(event);
 
-    public handle(_event: ethereum.Event, version: Version): void {
-        const ids = this.event.params.quoteIds
-        for (let i = 0; i < ids.length; i++) {
-            this._handle(ids[i])
-        }
-    }
+    const quote = Quote.load(quoteId.toString());
+    if (!quote) return BigInt.zero();
 
-    private _handle(quoteId: BigInt): void {
-        if (this.user == zero_address) return
-        const tradeVolume = this.getVolume(quoteId)
-        updateDailyHistory(this.user, this.account, this.day, tradeVolume, BigInt.zero(), this.timestamp) // user volume tracker
-    }
+    quote.quoteStatus = QuoteStatus.LIQUIDATED;
+    quote.timestamp = liquidateEvent.block.timestamp;
+    quote.closeDay = liquidateEvent.block.timestamp.div(BigInt.fromI32(86400));
+    quote.save();
 
-    public getVolume(quoteId: BigInt): BigInt {
-        const quote = Quote.load(quoteId.toString())
-        if (!quote) return BigInt.zero()
+    const symmioContract = symmio_0_8_2.bind(liquidateEvent.address);
+    const callResult = symmioContract.try_getQuote(quoteId);
+    if (callResult.reverted) return BigInt.zero(); // FIXME
 
-        quote.quoteStatus = QuoteStatus.LIQUIDATED
-        quote.timestamp = this.event.block.timestamp
-        quote.closeDay = this.day
-        quote.save()
+    const chainQuote = callResult.value;
+    const liquidAmount = quote.quantity!.minus(quote.closedAmount!);
+    const liquidPrice = chainQuote.avgClosedPrice!
+        .times(quote.quantity!)
+        .minus(quote.averageClosedPrice!.times(quote.closedAmount!))
+        .div(liquidAmount);
 
-        let symmioContract = symmio_0_8_2.bind(this.event.address)
-
-        const callResult = symmioContract.try_getQuote(quoteId)
-        if (callResult.reverted) return BigInt.zero() //FIXME
-        let chainQuote = callResult.value
-        const liquidAmount = quote.quantity!.minus(quote.closedAmount!)
-        const liquidPrice = chainQuote.avgClosedPrice!.times(quote.quantity!).minus(quote.averageClosedPrice!.times(quote.closedAmount!)).div(liquidAmount)
-        return liquidAmount.times(liquidPrice).div(BigInt.fromString("10").pow(18))
-    }
+    return liquidAmount.times(liquidPrice).div(BigInt.fromString("10").pow(18));
 }
