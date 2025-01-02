@@ -13,7 +13,8 @@ export class ChargeFundingRateHandler<T> extends BaseHandler {
 		for (let i = 0, lenQ = event.params.quoteIds.length; i < lenQ; i++) {
 			let quoteId = event.params.quoteIds[i]
 			const rate = event.params.rates[i]
-			let quote = Quote.load(quoteId.toString())!
+			let quote = Quote.load(quoteId.toString())
+			if (!quote) return
 			const openAmount = quote.quantity!.minus(quote.closedAmount!)
 			let funding: BigInt
 			switch (version) {
