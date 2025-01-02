@@ -1,7 +1,0 @@
-{
-  "VolumeRakebackTier": [
-    "VolumeRakebackTierAdded",
-    "VolumeRakebackTierUpdated",
-    "VolumeRakebackTierRemoved"
-  ]
-}

@@ -1,4 +1,0 @@
-type GlobalCounter @entity {
-    id: String!
-    counter: BigInt!
-}

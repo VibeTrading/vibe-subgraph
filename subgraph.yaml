@@ -1,0 +1,115 @@
+specVersion: 0.0.4
+schema:
+  file: ./schema.graphql
+dataSources:
+  - kind: ethereum/contract
+    name: SymmDataSource
+    network: base
+    source:
+      address: "0x91Cf2D8Ed503EC52768999aA6D8DBeA6e52dbe43"
+      abi: symmio
+      startBlock: 8443806
+    mapping:
+      kind: ethereum/events
+      apiVersion: 0.0.7
+      language: wasm/assemblyscript
+      entities:
+        - OpenPosition
+      abis:
+        - name: symmio
+          file: ./abis/symmio.json
+        - name: MultiAccount
+          file: ./abis/MultiAccount.json
+        - name: ReferralNFT
+          file: ./abis/ReferralNFT.json
+        - name: Rakeback
+          file: ./abis/Rakeback.json
+      eventHandlers:
+        - event: OpenPosition(uint256,address,address,uint256,uint256)
+          handler: handleOpenPosition
+        - event: SendQuote(address,uint256,address[],uint256,uint8,uint8,uint256,uint256,uint256,uint256,uint256,uint256,uint256,uint256,uint256)
+          handler: handleSendQuote
+        - event: FillCloseRequest(uint256,address,address,uint256,uint256,uint8)
+          handler: handleFillCloseRequest
+        - event: EmergencyClosePosition(uint256,address,address,uint256,uint256,uint8)
+          handler: handleEmergencyCloseRequest
+        - event: ForceClosePosition(uint256,address,address,uint256,uint256,uint8)
+          handler: handleForceCloseRequest
+        - event: LiquidatePositionsPartyA(address,address,uint256[])
+          handler: handleLiquidatePositionsPartyA
+        - event: LiquidatePositionsPartyB(address,address,address,uint256[])
+          handler: handleLiquidatePositionsPartyB
+        - event: SetSymbolTradingFee(uint256,uint256,uint256)
+          handler: handleSetSymbolTradingFee
+        - event: AddSymbol(uint256,string,uint256,uint256,uint256,uint256,uint256,uint256)
+          handler: handleAddSymbol
+      file: ./src/main.ts
+  - kind: ethereum
+    name: ReferralNFT
+    network: base
+    source:
+      address: "0xD48d1249C551D36701043E223e35Ae34FC9d941C"
+      abi: ReferralNFT
+      startBlock: 19551969
+    mapping:
+      kind: ethereum/events
+      apiVersion: 0.0.7
+      language: wasm/assemblyscript
+      entities:
+        - AdminChanged
+      abis:
+        - name: ReferralNFT
+          file: ./abis/ReferralNFT.json
+      eventHandlers:
+        - event: SetReferrer(indexed uint256,indexed uint256)
+          handler: handleSetReferrer
+        - event: Transfer(indexed address,indexed address,indexed uint256)
+          handler: handleTransfer
+      file: ./src/rfl.ts
+  - kind: ethereum
+    name: Rakeback
+    network: base
+    source:
+      address: "0x4db6289880eB3BeD280958726396F43E996D8D58"
+      abi: Rakeback
+      startBlock: 19579863
+    mapping:
+      kind: ethereum/events
+      apiVersion: 0.0.7
+      language: wasm/assemblyscript
+      entities:
+        - RakebackAdminChanged
+        - Upgraded
+      abis:
+        - name: Rakeback
+          file: ./abis/Rakeback.json
+      eventHandlers:
+        - event: VolumeRakebackTierAdded(uint256,uint256,uint256)
+          handler: handleVolumeRakebackTierAdded
+        - event: VolumeRakebackTierUpdated(uint256,uint256,uint256)
+          handler: handleVolumeRakebackTierUpdated
+        - event: VolumeRakebackTierRemoved(uint256)
+          handler: handleVolumeRakebackTierRemoved
+      file: ./src/rakeback.ts
+  - kind: ethereum
+    name: MultiAccount
+    network: base
+    source:
+      address: "0x8a98f69139534Ef85775b473082CE4Af1373cd63"
+      abi: MultiAccount
+      startBlock: 19460596
+    mapping:
+      kind: ethereum/events
+      apiVersion: 0.0.7
+      language: wasm/assemblyscript
+      entities:
+        - AddAccount
+      abis:
+        - name: MultiAccount
+          file: ./abis/MultiAccount.json
+      eventHandlers:
+        - event: AddAccount(address,address,string)
+          handler: handleAddAccount
+        - event: EditAccountName(address,address,string)
+          handler: handleEditAccountName
+      file: ./src/multi-account.ts

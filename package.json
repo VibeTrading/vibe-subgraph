@@ -1,9 +1,20 @@
 {
-  "name": "subgraph",
+  "name": "ReferralVolumeTracker",
+  "license": "MIT",
+  "scripts": {
+    "codegen": "graph codegen",
+    "build": "graph build",
+    "test": "graph test"
+  },
+  "dependencies": {
+    "@graphprotocol/graph-cli": "0.64.1",
+    "@graphprotocol/graph-ts": "0.32.0",
+    "@types/node": "^20.10.6",
+    "node-fetch": "^3.3.2",
+    "typescript": "^5.3.3"
+  },
   "devDependencies": {
-    "@graphprotocol/graph-ts": "*",
-    "matchstick-as": "^0.5.0",
-    "mustache": "^4.2.0",
-    "prettier": "3.3.3"
+    "matchstick-as": "0.6.0",
+    "mustache": "^4.2.0"
   }
 }

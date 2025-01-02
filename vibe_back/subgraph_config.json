@@ -1,3 +1,0 @@
-{
-	"importModels": ["GlobalCounter", "Symbol", "User", "Account", "Quote", "DebugEntity"]
-}
